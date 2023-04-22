@@ -2,8 +2,20 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Banner from "@/components/bannersugar";
 import Image from "next/image";
+import Card from "@/components/cardsugar";
+import coffeeStore from "../data/coffee-stores.json";
 
-export default function Home() {
+export async function getStaticProps(context) {
+  console.log("context", context)
+  return {
+    props: {
+      coffeeStore,
+    }, // will be passed to the page component as props
+  };
+}
+
+export default function Home({ coffeeStore }) {
+  console.log("coffeeStore", coffeeStore);
   const handleOnClickBtn = () => {
     console.log("button clicked");
   };
@@ -27,6 +39,19 @@ export default function Home() {
             width={1000}
             height={450}
           />
+        </div>
+        <div className={styles.cardLayout}>
+          {coffeeStore.map((coffeeStore) => {
+            return (
+              <Card key={coffeeStore.id}
+                href={`/coffee-store/${coffeeStore.id}`}
+                name={coffeeStore.name}
+                imgUrl={coffeeStore.imgUrl}
+                alt="Darkhorse Coffee"
+                className={styles.card}
+              />
+            );
+          })}
         </div>
       </main>
     </>
